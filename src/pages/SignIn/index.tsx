@@ -20,6 +20,7 @@ import Button from '../../components/Button';
 import logoImg from '../../assets/logo.png';
 
 import getValidationErrors from '../../utils/getValidationErrors';
+import { useAuth } from '../../hooks/auth';
 
 import {
   Container,
@@ -41,6 +42,8 @@ const SignIn: React.FC = () => {
   // Criar uma Ref para manipular um elemento de forma direta
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
+
+  const { signIn } = useAuth();
 
   const handleSignIn = useCallback(
     // async (data: object) => {
@@ -64,12 +67,10 @@ const SignIn: React.FC = () => {
         await schema.validate(data, {
           abortEarly: false,
         });
-        // await signIn({
-        //   email: data.email,
-        //   password: data.password,
-        // });
-
-        // history.push('/dashboard');
+        await signIn({
+          email: data.email,
+          password: data.password,
+        });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -91,7 +92,7 @@ const SignIn: React.FC = () => {
         );
       }
     },
-    [],
+    [signIn],
   );
 
   return (

@@ -21,6 +21,8 @@ import logoImg from '../../assets/logo.png';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 
+import api from '../../services/api';
+
 import { Container, Title, BackToSignIn, BackToSignInText } from './styles';
 
 interface SignUpFormData {
@@ -61,8 +63,13 @@ const SignUp: React.FC = () => {
         abortEarly: false,
       });
 
-      // await api.post('/users', data);
-      // history.push('/');
+      Alert.alert(
+        'Cadastro realizado com sucesso',
+        ' Você já pode fazer login na aplicação.',
+      );
+
+      await api.post('/users', data);
+      navigation.goBack();
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errors = getValidationErrors(err);
